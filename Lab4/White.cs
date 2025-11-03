@@ -203,35 +203,59 @@
             int[] C = null;
 
             // code here
-            int imax = 0;
-            int i = 0;
-            if (A == null || A.Length == 0)
+          if (A == null && B == null) 
+          {
+            if (A == null && B == null)
             {
-                if (B == null)
-                {
-                    return new int[0];
-                }
-                else
-                {
-                    return B;
-                }
+                C = new int[0];
             }
-            if (B == null || B.Length == 0)
+            else if (A == null)
             {
-                return A;
-            {
-                C = new int[A.Length + B.Length];
-                int i = 0, j = 0;
-
-                while (i < A.Length && j < B.Length)
+                C = new int[B.Length];
+                for (int i = 0; i < B.Length; i++)
                 {
-                    C[index++] = A[i++];
-                    C[index++] = B[j++];
+                     C[i] = B[i];
                 }
-
-                while (i < A.Length) C[index++] = A[i++];
-                while (j < B.Length) C[index++] = B[j++];
-            }
+                }
+                else if (B == null)
+                {
+                    C = new int[A.Length];
+                    for (int i = 0; i < A.Length; i++)
+                    {
+                        C[i] = A[i];
+                    }
+                    }
+                    else
+                    {
+                        C = new int[A.Length + B.Length];
+                        int index = 0;
+                        int minLength = A.Length < B.Length ? A.Length : B.Length;
+                        for (int i = 0; i < minLength; i++)
+                        {
+                            C[index] = A[i];
+                            index++;
+                            C[index] = B[i];
+                            index++;
+                        }
+                        if (A.Length > minLength)
+                        {
+                            for (int i = minLength; i < A.Length; i++)
+                            {
+                                C[index] = A[i];
+                                index++;
+                                }
+                                }
+                                else if (B.Length > minLength)
+                                {
+                                    for (int i = minLength; i < B.Length; i++)
+                                    {
+                                        C[index] = B[i];
+                                        index++;
+                                        }
+                                }
+                                }
+          }
+        
             // end
         
             return C;
@@ -267,27 +291,28 @@
             if (raw != null && raw.Length >= 3)
             {
                 restored = new double[raw.Length];
-                Array.Copy(raw, restored, raw.Length);
-                if (restored[0] == -1 && restored[1] != -1 && restored[raw.Length - 1] != -1)
+                for (int i = 0; i < raw.Length; i++)
                 {
-                    restored[0] = (restored[1] + restored[raw.Length - 1]) / 2;
-                }
-                if (restored[raw.Length - 1] == -1 && restored[0] != -1 && restored[raw.Length - 2] != -1)
-                {
-                    restored[raw.Length - 1] = (restored[0] + restored[raw.Length - 2]) / 2;
-                }
-                for (int i = 1; i < raw.Length - 1; i++)
-                {
-                    double prev = restored[(i - 1)];
-                    double next = restored[(i + 1)];
-                    if (restored[i] == -1 && prev != -1 && next != -1)
-                    {
-
-                        restored[i] = (prev + next) / 2;
-
+                    restored[i] = raw[i];
                     }
-                }
-            }
+                    if (restored[0] == -1.0 && restored[1] != -1.0 && restored[raw.Length - 1] != -1.0)
+                    {
+                        restored[0] = (restored[1] + restored[raw.Length - 1]) / 2.0;
+                    }
+                    if (restored[raw.Length - 1] == -1.0 && restored[0] != -1.0 && restored[raw.Length - 2] != -1.0)
+                    {
+                        restored[raw.Length - 1] = (restored[0] + restored[raw.Length - 2]) / 2.0;
+                    }
+                    for (int i = 1; i < raw.Length - 1; i++)
+                    {
+                        double prev = restored[i - 1];
+                        double next = restored[i + 1];
+                        if (restored[i] == -1.0 && prev != -1.0 && next != -1.0)
+                        {
+                            restored[i] = (prev + next) / 2.0;
+                            }
+                            }
+                            }
             // end
 
             return restored;
